@@ -33,8 +33,11 @@ public class TeacherStatsFrame extends JFrame {
         add(topPanel, BorderLayout.NORTH);
 
         // Таблиця
-        model = new DefaultTableModel(30, 2);
-        model.setColumnIdentifiers(new String[]{"Вік", "Лікарняних"});
+        model = new DefaultTableModel(30, 3); // 3 columns now
+        model.setColumnIdentifiers(new String[]{"Викладач", "Вік", "Лікарняних"});
+        for (int i = 0; i < model.getRowCount(); i++) {
+            model.setValueAt("Викладач " + (i + 1), i, 0);
+        }
         table = new JTable(model);
         add(new JScrollPane(table), BorderLayout.CENTER);
 
@@ -52,6 +55,21 @@ public class TeacherStatsFrame extends JFrame {
         bottomPanel.add(medianLabel);
         bottomPanel.add(varianceLabel);
 
+        JButton resetButton = new JButton("Очистити");
+        resetButton.addActionListener(e -> {
+            int count = (int) teacherCountSpinner.getValue();
+            model.setRowCount(count);
+            for (int i = 0; i < count; i++) {
+                model.setValueAt("Викладач " + (i + 1), i, 0);
+                model.setValueAt(null, i, 1);
+                model.setValueAt(null, i, 2);
+            }
+            meanLabel.setText("Середнє: ");
+            medianLabel.setText("Медіана: ");
+            varianceLabel.setText("Дисперсія: ");
+        });
+        bottomPanel.add(resetButton);
+
         add(bottomPanel, BorderLayout.SOUTH);
 
         setVisible(true);
@@ -65,8 +83,8 @@ public class TeacherStatsFrame extends JFrame {
         for (int i = 0; i < count; i++) {
             int age = 25 + random.nextInt(46);       // 25..70
             int sickDays = random.nextInt(11);       // 0..10
-            model.setValueAt(age, i, 0);
-            model.setValueAt(sickDays, i, 1);
+            model.setValueAt(age, i, 1);
+            model.setValueAt(sickDays, i, 2);
         }
     }
 
@@ -76,7 +94,7 @@ public class TeacherStatsFrame extends JFrame {
         int count = 0;
 
         for (int i = 0; i < rows; i++) {
-            Object value = table.getValueAt(i, 1);
+            Object value = table.getValueAt(i, 2);
             if (value != null) {
                 try {
                     values[count++] = Double.parseDouble(value.toString());

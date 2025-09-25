@@ -19,19 +19,19 @@ public class MatrixFrame extends JFrame {
 
         // Панель керування зверху
         JPanel controlPanel = new JPanel();
-        controlPanel.add(new JLabel("Рядки:"));
+        controlPanel.add(new JLabel("Rows:"));
         rowsSpinner = new JSpinner(new SpinnerNumberModel(3, 1, 10, 1));
         controlPanel.add(rowsSpinner);
 
-        controlPanel.add(new JLabel("Стовпці:"));
+        controlPanel.add(new JLabel("Columns:"));
         colsSpinner = new JSpinner(new SpinnerNumberModel(3, 1, 10, 1));
         controlPanel.add(colsSpinner);
 
-        JButton generateButton = new JButton("Створити таблицю");
+        JButton generateButton = new JButton("Generate data");
         generateButton.addActionListener(this::generateTable);
         controlPanel.add(generateButton);
 
-        JButton calcButton = new JButton("Обчислити");
+        JButton calcButton = new JButton("Calculate");
         calcButton.addActionListener(this::calculate);
         controlPanel.add(calcButton);
 
@@ -42,7 +42,7 @@ public class MatrixFrame extends JFrame {
         add(new JScrollPane(table), BorderLayout.CENTER);
 
         // Результат внизу
-        resultLabel = new JLabel("Результат: ");
+        resultLabel = new JLabel("Result: ");
         add(resultLabel, BorderLayout.SOUTH);
 
         setVisible(true);
@@ -63,7 +63,7 @@ public class MatrixFrame extends JFrame {
             }
         }
 
-        resultLabel.setText("Результат: (ще не обчислювався)");
+        resultLabel.setText("Result: (null)");
     }
 
     // Обчислення добутку від'ємних чисел у кожному стовпці
@@ -87,7 +87,7 @@ public class MatrixFrame extends JFrame {
                             hasNegative = true;
                         }
                     } catch (NumberFormatException ex) {
-                        JOptionPane.showMessageDialog(this, "Некоректне значення у клітинці [" + r + "," + c + "]");
+                        JOptionPane.showMessageDialog(this, "Error in [" + r + "," + c + "]");
                         return;
                     }
                 }
@@ -108,9 +108,9 @@ public class MatrixFrame extends JFrame {
         }
 
         if (minCol == -1) {
-            resultLabel.setText("Результат: немає від'ємних елементів у жодному стовпці");
+            resultLabel.setText("Result: no negative numbers in any column");
         } else {
-            resultLabel.setText("Результат: стовпець " + (minCol + 1) + ", добуток = " + minVal);
+            resultLabel.setText("Result: column " + (minCol + 1) + ", product of numbers = " + minVal);
         }
     }
 
